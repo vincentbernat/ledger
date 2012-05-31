@@ -1,7 +1,7 @@
 # quick doc-building makefile used by website
 # requires: man2html, texinfo
 
-docs: ledger.1.html ledger.html ledger.pdf ledger3.html ledger3.pdf
+docs: ledger.1.html ledger.html ledger.pdf ledger3.html ledger3.pdf ledger3_python_api.html ledger3_python_api.pdf
 
 %.1.html: %.1
 	-man2html $< | tail -n+3 >$@
@@ -14,4 +14,4 @@ docs: ledger.1.html ledger.html ledger.pdf ledger3.html ledger3.pdf
 	rm -f $*.aux $*.cp $*.fn $*.ky $*.log $*.pg $*.toc $*.tp $*.vr
 
 clean:
-	rm -rf ledger.1.html ledger.html ledger3.html ledger.pdf ledger3.pdf
+	rm -rf ledger.1.html ledger.html ledger3.html ledger.pdf ledger3.pdf ledger3_python_api.html ledger3_python_api.pdf

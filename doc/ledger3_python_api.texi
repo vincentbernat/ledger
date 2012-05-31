@@ -1,0 +1,566 @@
+\input texinfo  @c -*-texinfo-*-
+
+@setfilename ledger3_python_api.info
+@settitle Ledger 3 Python API Reference
+
+@dircategory User Applications
+@copying
+Copyright (c) 2003-2012, John Wiegley.  All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+- Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+- Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+
+- Neither the name of New Artisans LLC nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+@end copying
+
+@documentencoding UTF-8
+
+@iftex
+@finalout
+@end iftex
+
+
+@titlepage
+@title Ledger Python API Reference
+@subtitle For Version 3.0 of Ledger
+@author Tim Crews
+@end titlepage
+
+@direntry
+* PythonAPI: (pythonapi).           Ledger Python API
+@end direntry
+
+@contents
+
+@ifnottex
+@node Top, Module constants, (dir), (dir)
+@top Python API Overview
+Ledger is a command line accounting tool that provides double-entry
+accounting based on a text journal.  It provides no bells or whistles,
+and returns the user to the days before user interfaces were even a
+twinkling in their father's CRT.
+
+The ledger Python module provides programmatic access to most of the features of
+the ledger application.  It is not distributed as a standalone Python module;
+instead, it must be used in the context of the ledger application itself.  The
+command line @command{ledger python} will start a Python interactive session,
+from which you can do anything you could normally do from a Python interactive
+session, but from which you can also @code{import ledger} as if 'ledger' were a
+normal Python module.
+
+Python scripts that @code{import ledger} also can be executed immediately from
+the command line as follows: @command{ledger python my_script.py}
+
+@c @insertcopying
+@end ifnottex
+
+@menu
+* Module constants::
+
+* Account objects::
+* AccountXData objects::
+* AccountXDataDetails objects::
+* Amount objects::
+* FileInfo objects::
+* Journal objects::
+* PostCollectorWrapper objects::
+* PostHandler objects::
+@end menu
+
+@node Module constants, Account objects, Top, Top
+@chapter Module constants
+
+@section Account flags
+ACCOUNT_EXT_SORT_CALC;
+@* ACCOUNT_EXT_HAS_NON_VIRTUALS;
+@* ACCOUNT_EXT_HAS_UNB_VIRTUALS;
+@* ACCOUNT_EXT_AUTO_VIRTUALIZE;
+@* ACCOUNT_EXT_VISITED;
+@* ACCOUNT_EXT_MATCHING;
+@* ACCOUNT_EXT_TO_DISPLAY;
+@* ACCOUNT_EXT_DISPLAYED;
+
+@section Account types
+ACCOUNT_NORMAL
+@* ACCOUNT_KNOWN
+@* ACCOUNT_TEMP
+
+@node Account objects, AccountXDataDetails objects, Module constants, Top
+@chapter Account objects
+
+@section Account.flags
+A read/write property, an unsigned integer flags value.
+
+@section Account.has_flags(flags)
+Returns bool
+
+@section Account.clear_flags()
+
+@section Account.add_flags(flags)
+
+@section Account.drop_flags(flags)
+
+@section Account.parent
+A read-only property returning Account.
+
+@section Account.name
+A read/write string property.
+
+@section Account.note
+A read/write string property
+@comment I'm not sure that Boost:Python knows how to automatically wrap optional<string>.
+@comment See http://mail.python.org/pipermail/cplusplus-sig/2004-September/007757.html
+
+@section Account.depth
+A read-only unsigned integer property.
+
+@section Account.fullname()
+Returns string.
+@comment Should be a read-only property.
+
+@section Account.partial_name(flat = False)
+Returns string.
+
+@section Account.add_account(account)
+
+@section Account.remove_account(account)
+Returns bool
+
+@section Account.find_account(string, auto_create = True)
+Returns account
+
+@section Account.find_account_re(string)
+Returns account
+
+@section Account.add_post(post)
+
+@section Account.remove_post(post)
+Returns bool
+
+@section Account.valid()
+returns bool
+@comment This should be a read-only property.
+
+@section Account.__len__(), __getitem__(), __iter__()
+Iterate through accounts
+
+@section Account.accounts()
+Returns a sequence of accounts.
+@comment This should be a read-only property.
+
+@section Account.posts()
+Returns a sequence of posts.
+@comment This should be a read-only property.
+
+@section Account.has_xdata()
+Returns bool.
+@comment This should be a read-only property.
+
+@section Account.clear_xdata()
+
+@section Account.xdata()
+Returns xdata.
+@comment This should be a read-only property.
+
+@section Account.amount()
+Returns value_t.
+@comment This should be a read-only property.
+
+@section Account.total()
+Returns value_t.
+@comment This should be a read-only property.
+
+@section Account.self_details()
+Returns details_t.
+@comment This should be a read-only property.
+
+@section Account.family_details()
+Returns details_t.
+@comment This should be a read-only property.
+
+@section Account.has_xflags()
+Returns bool.
+@comment This should be a read-only property.
+
+@section Account.children_with_flags(flags)
+Returns size_t.
+
+@node AccountXDataDetails objects, AccountXData objects, Account objects, Top
+@chapter AccountXDataDetails objects
+
+@section AccountXDataDetails.total 
+A read-only data member returning @code{value_t}
+
+@section AccountXDataDetails.calculated
+A read-only data member returning @code{bool}
+
+@section AccountXDataDetails.gathered
+A read-only data member returning @code{bool}
+
+@section AccountXDataDetails.posts_count
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.posts_virtuals_count
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.posts_cleared_count 
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.posts_last_7_count
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.posts_last_30_count
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.posts_this_month_count
+A read-only data member returning @code{size_t}
+
+@section AccountXDataDetails.earliest_post
+A read-only data member returning @code{date_t}
+@comment This needs a date_t to datetime conversion.
+
+@section AccountXDataDetails.earliest_cleared_post
+A read-only data member returning @code{date_t}
+@comment This needs a date_t to datetime conversion.
+
+@section AccountXDataDetails.latest_post
+A read-only data member returning @code{date_t}
+@comment This needs a date_t to datetime conversion.
+
+@section AccountXDataDetails.latest_cleared_post
+A read-only data member returning @code{date_t}
+@comment This needs a date_t to datetime conversion.
+
+@section AccountXDataDetails.filenames
+A read-only data member returning @code{set<path>}
+@comment This needs an iterator wrapper
+
+@section AccountXDataDetails.accounts_referenced
+A read-only data member returning @code{set<string>}
+@comment This needs an iterator wrapper
+
+@section AccountXDataDetails.payees_referenced
+A read-only data member returning @code{set<string>}
+@comment This needs an iterator wrapper
+
+@section AccountXDataDetails.update(post, gather_all=False)
+
+@node AccountXData objects, Amount objects, AccountXDataDetails objects, Top
+@chapter AccountXData objects
+
+@section AccountXData.flags
+A read/write property, an unsigned integer flags value.
+
+@section AccountXData.has_flags(flags)
+Returns bool
+
+@section AccountXData.clear_flags()
+
+@section AccountXData.add_flags(flags)
+
+@section AccountXData.drop_flags(flags)
+
+@section AccountXData.self_details(gather_all = True)
+Returns details_t
+
+@section AccountXData.family_details(gather_all = True)
+Returns details_t
+
+@section AccountXData.reported_posts()
+A read-only data member returning a list of posts
+@comment This needs an iterator wrapper.
+
+@section AccountXData.sort_values()
+A read-only data member returning a list of sort_value_t
+@comment This needs an iterator wrapper.
+
+@node Amount objects, PostHandler objects, AccountXData objects, Top
+@chapter Amount objects
+
+@section ParseFlags
+
+Enumerator with values
+@* PARSE_DEFAULT
+@* PARSE_PARTIAL
+@* PARSE_SINGLE
+@* PARSE_NO_MIGRATE
+@* PARSE_NO_REDUCE
+@* PARSE_NO_ASSIGN
+@* PARSE_OP_CONTEXT
+@* PARSE_SOFT_FAIL
+
+@section Amount.initialize()
+Class static method
+
+@section Amount.shutdown()
+Class static method
+
+@section Amount.exact (value)
+Class static method
+
+@section Amount.is_initialized
+Class static property, bool
+
+@section Amount.stream_fullstring 
+Class static property, bool
+
+@section Amount.init(value)
+
+@section Amount.compare(amount)
+
+@section operators
+==, !=, <, <=, >, <=
+@* +=, +, -=, -, *=, *, /=, /
+
+@section Amount.precision
+Read-only integer property
+
+@section Amount.display_precision
+Read-only integer property
+
+@section Amount.keep_prevision
+Read/write bool property
+
+@section Amount.negated(), inverted(), rounded(), truncated(), floored(), unrounded(), reduced(), unreduced()
+Returns Amount
+
+@section Amount.in_place_negate(), in_place_invert(), in_place_round(), in_place_truncate(), in_place_floor(), in_place_unround(), in_place_reduced(), in_place_unreduced()
+
+@section Amount.abs(), Amount.__abs__()
+Returns Amount
+
+@section Amount.value(amount, [in_terms_of [,moment]])
+
+Where moment can be either a date_t or a datetime_t.
+Returns an optional<Amount>
+
+@comment I don't think that Boost::Python knows how to automatically wrap
+@comment boost::optional values.
+
+@comment The moment parameter should be converted from native Python
+@comment date/datetime types.
+
+@section Amount.price
+
+Returns an optional<Amount>
+@comment I don't think that Boost::Python knows how to automatically wrap
+@comment boost::optional values.
+
+@comment This should be a read-only property.
+
+@section Amount.sign
+
+Returns an integer less than, greater than, or equal to zero depending on
+whether the amount is negative, zero, or greater than zero.  Note that this
+function tests the actual value of the amount -- using its internal precision --
+and not the display value.  To test its display value, use: `round().sign()'.
+
+@comment This should be a read-only property.
+
+@section Amount.is_nonzero(), is_zero(), is_realzero(), is_null()
+
+is_nonzero(), or operator bool, returns True if an amount's display value is not
+zero.
+
+is_zero() returns True if an amount's display value is zero.  Thus, $0.0001 is
+considered zero if the current display precision for dollars is two decimal
+places.
+
+is_realzero() returns True if an amount's actual value is zero.  Thus, $0.0001
+is never considered realzero.
+
+is_null() returns True if an amount has no value and no commodity.  This only
+occurs if an uninitialized amount has never been assigned a value.
+
+@comment These should be read-only properties.
+
+@section Amount.to_double(), __float__(), to_long(), __int__()
+
+@section Amount.fits_in_long()
+Returns bool.
+
+@comment This should be a read-only property.
+
+@section Amount.commodity
+Read/write Commodity property.
+
+Returns an amount's commodity.  If the amount has no commodity, the value
+returned is the `null_commodity'.
+
+@section Amount.has_commodity()
+Returns bool, True if the amount has a commodity.
+
+@comment This should be a read-only property.
+
+@section Amount.with_commodity(commodity)
+Returns new Amount, with specified commodity applied to the target Amount.
+
+@section Amount.clear_commodity()
+
+@section Amount.number
+Returns an amount equivalent to the target amount, but without a commodity.
+
+@section Amount.annotate(annotation)
+
+An amount's commodity may be annotated with special details, such as the
+price it was purchased for, when it was acquired, or an arbitrary note,
+identifying perhaps the lot number of an item.
+
+@comment The source code comments on the annotation stuff is out of date.
+
+@section Amount.has_annotation()
+Returns bool
+
+@comment This should be a read-only property.
+
+@section Amount.annotation()
+Returns Annotation
+
+@comment This should be a read-only property.
+
+@section Amount.strip_annotations([keep_details])
+
+@section Amount.parse(file_to_parse [,flags])
+@section Amount.parse(string_to_parse [,flags])
+
+@section Amount.parse_conversion(larger_string, smaller_string)
+
+This can be used to define a relationship between scaling commodity values.  For
+example, Ledger uses it to define the relationships among various time
+values:
+
+      @smallexample
+      amount_t::parse_conversion("1.0m", "60s"); // a minute is 60 seconds
+      amount_t::parse_conversion("1.0h", "60m"); // an hour is 60 minutes
+      @end smallexample
+
+@section valid()
+Returns bool
+
+@comment This should be a read-only property
+
+@node PostHandler objects, PostCollectorWrapper objects, Amount objects, Top
+@chapter PostHandler objects
+
+@node PostCollectorWrapper objects, FileInfo objects, PostHandler objects, Top
+@chapter PostCollectorWrapper objects
+
+@node FileInfo objects, Journal objects, PostCollectorWrapper objects, Top
+@chapter FileInfo objects
+@comment The Python standard library has a few functions whose purpose overlaps
+@comment the functionality of this FileInfo class.  For example, os.stat returns
+@comment the file size and modification time.
+
+@section init
+@comment I don't think Boost::Python knows about boost::filesystem::path.  Is
+@comment the intent for Python code to be able to directly create FileInfo
+@comment objects?
+
+@section FileInfo.filename
+A read/write string property
+@comment I'm not sure that Boost:Python knows how to automatically wrap optional
+@comment or boost::filesystem::path.
+@comment See http://mail.python.org/pipermail/cplusplus-sig/2004-September/007757.html
+
+@section FileInfo.size
+A read/write unsigned integer property
+
+@section FileInfo.modtime
+A read/write datetime_t property
+@comment This needs a convertor to Python's datetime class.
+
+@section FileInfo.from_stream
+A read/write bool property
+
+@node Journal objects,  , FileInfo objects, Top
+@chapter Journal objects
+
+@section Journal.master
+A read-only Account property
+
+@section Journal.bucket
+A read/write Account property
+
+@section Journal.was_loaded
+A read-only bool property
+
+@section Journal.add_account (account)
+
+@section Journal.remove_account (account)
+Returns bool
+
+@section Journal.find_account(journal, name)
+Returns Account
+
+@section Journal.find_account (journal, name, auto_create=True)
+Returns Account
+@comment BOOST_PYTHON_FUNCTION_OVERLOADS might be useful here to manage the
+@comment default value for the auto_create parameter.
+
+@section Journal.find_account_re (regexp)
+Returns Account
+
+@section Journal.add_xact (xact)
+Returns bool
+
+@section Journal.remove_xact (xact)
+Returns bool
+
+@section Journal.len
+The length of the xacts collection.
+
+@section Journal.__iter__
+An iterator through the xacts collection
+
+@section Journal.xacts()
+An iterator through the transactions, each element is an xact
+@comment This should be a read-only property.
+
+@section Journal.auto_xacts()
+An iterator, each element is an xact.
+@comment This should be a read-only property.
+
+@section Journal.period_xacts()
+An iterator, each element is an xact.
+@comment This should be a read-only property.
+
+@section Journal.sources()
+An iterator, each element is a FileInfo.
+@comment This should be a read-only property.
+
+@section Journal.has_xdata()
+Returns bool
+@comment This should be a read-only property.
+
+@section Journal.clear_xdata()
+
+@section Journal.query (journal, query)
+Returns a sequence of posts
+
+@section Journal.valid()
+Returns bool
+
+
+@bye
