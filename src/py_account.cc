@@ -127,18 +127,25 @@ void export_account()
     .def_readonly("posts_this_month_count",
                   &account_t::xdata_t::details_t::posts_this_month_count)
 
+    // TODO needs a date_t to Python datetime conversion
     .def_readonly("earliest_post",
                   &account_t::xdata_t::details_t::earliest_post)
+    // TODO needs a date_t to Python datetime conversion
     .def_readonly("earliest_cleared_post",
                   &account_t::xdata_t::details_t::earliest_cleared_post)
+    // TODO needs a date_t to Python datetime conversion
     .def_readonly("latest_post",
                   &account_t::xdata_t::details_t::latest_post)
+    // TODO needs a date_t to Python datetime conversion
     .def_readonly("latest_cleared_post",
                   &account_t::xdata_t::details_t::latest_cleared_post)
 
+    // TODO needs an iterator wrapper
     .def_readonly("filenames", &account_t::xdata_t::details_t::filenames)
+    // TODO needs an iterator wrapper
     .def_readonly("accounts_referenced",
                   &account_t::xdata_t::details_t::accounts_referenced)
+    // TODO needs an iterator wrapper
     .def_readonly("payees_referenced",
                   &account_t::xdata_t::details_t::payees_referenced)
 
@@ -160,7 +167,9 @@ void export_account()
 
     .def_readonly("self_details", &account_t::xdata_t::self_details)
     .def_readonly("family_details", &account_t::xdata_t::family_details)
+    // TODO needs an iterator wrapper
     .def_readonly("reported_posts", &account_t::xdata_t::reported_posts)
+    // TODO needs an iterator wrapper
     .def_readonly("sort_values", &account_t::xdata_t::sort_values)
     ;
 
@@ -184,12 +193,18 @@ void export_account()
                               return_internal_reference<>()))
 
     .def_readwrite("name", &account_t::name)
+
+    // TODO I'm not sure that boost::python knows how to automatically wrap 
+    // optional<string>.  See 
+    // http://mail.python.org/pipermail/cplusplus-sig/2004-September/007757.html
     .def_readwrite("note", &account_t::note)
+
     .def_readonly("depth", &account_t::depth)
 
     .def("__str__", &account_t::fullname)
     .def("__unicode__", py_account_unicode)
 
+    // TODO read-only property
     .def("fullname", &account_t::fullname)
     .def("partial_name", &account_t::partial_name)
 
@@ -204,6 +219,7 @@ void export_account()
     .def("add_post", &account_t::add_post)
     .def("remove_post", &account_t::remove_post)
 
+    // TODO read-only property
     .def("valid", &account_t::valid)
 
     .def("__len__", accounts_len)
@@ -211,24 +227,33 @@ void export_account()
 
     .def("__iter__", python::range<return_internal_reference<> >
          (&account_t::accounts_begin, &account_t::accounts_end))
+    // TODO read-only property
     .def("accounts", python::range<return_internal_reference<> >
          (&account_t::accounts_begin, &account_t::accounts_end))
+    // TODO read-only property
     .def("posts", python::range<return_internal_reference<> >
          (&account_t::posts_begin, &account_t::posts_end))
 
+    // TODO read-only property
     .def("has_xdata", &account_t::has_xdata)
     .def("clear_xdata", &account_t::clear_xdata)
+    // TODO read-only property
     .def("xdata", py_xdata,
          return_internal_reference<>())
 
+    // TODO read-only property
     .def("amount", &account_t::amount)
+    // TODO read-only property
     .def("total", &account_t::total)
 
+    // TODO read-only property
     .def("self_details", &account_t::self_details,
          return_internal_reference<>())
+    // TODO read-only property
     .def("family_details", &account_t::family_details,
          return_internal_reference<>())
 
+    // TODO read-only property
     .def("has_xflags", &account_t::has_xflags)
     .def("children_with_flags", &account_t::children_with_flags)
     ;

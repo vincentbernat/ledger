@@ -130,15 +130,12 @@ A read/write string property.
 
 @section Account.note
 A read/write string property
-@comment I'm not sure that Boost:Python knows how to automatically wrap optional<string>.
-@comment See http://mail.python.org/pipermail/cplusplus-sig/2004-September/007757.html
 
 @section Account.depth
 A read-only unsigned integer property.
 
 @section Account.fullname()
 Returns string.
-@comment Should be a read-only property.
 
 @section Account.partial_name(flat = False)
 Returns string.
@@ -161,48 +158,38 @@ Returns bool
 
 @section Account.valid()
 returns bool
-@comment This should be a read-only property.
 
 @section Account.__len__(), __getitem__(), __iter__()
 Iterate through accounts
 
 @section Account.accounts()
 Returns a sequence of accounts.
-@comment This should be a read-only property.
 
 @section Account.posts()
 Returns a sequence of posts.
-@comment This should be a read-only property.
 
 @section Account.has_xdata()
 Returns bool.
-@comment This should be a read-only property.
 
 @section Account.clear_xdata()
 
 @section Account.xdata()
 Returns xdata.
-@comment This should be a read-only property.
 
 @section Account.amount()
 Returns value_t.
-@comment This should be a read-only property.
 
 @section Account.total()
 Returns value_t.
-@comment This should be a read-only property.
 
 @section Account.self_details()
 Returns details_t.
-@comment This should be a read-only property.
 
 @section Account.family_details()
 Returns details_t.
-@comment This should be a read-only property.
 
 @section Account.has_xflags()
 Returns bool.
-@comment This should be a read-only property.
 
 @section Account.children_with_flags(flags)
 Returns size_t.
@@ -239,31 +226,24 @@ A read-only data member returning @code{size_t}
 
 @section AccountXDataDetails.earliest_post
 A read-only data member returning @code{date_t}
-@comment This needs a date_t to datetime conversion.
 
 @section AccountXDataDetails.earliest_cleared_post
 A read-only data member returning @code{date_t}
-@comment This needs a date_t to datetime conversion.
 
 @section AccountXDataDetails.latest_post
 A read-only data member returning @code{date_t}
-@comment This needs a date_t to datetime conversion.
 
 @section AccountXDataDetails.latest_cleared_post
 A read-only data member returning @code{date_t}
-@comment This needs a date_t to datetime conversion.
 
 @section AccountXDataDetails.filenames
 A read-only data member returning @code{set<path>}
-@comment This needs an iterator wrapper
 
 @section AccountXDataDetails.accounts_referenced
 A read-only data member returning @code{set<string>}
-@comment This needs an iterator wrapper
 
 @section AccountXDataDetails.payees_referenced
 A read-only data member returning @code{set<string>}
-@comment This needs an iterator wrapper
 
 @section AccountXDataDetails.update(post, gather_all=False)
 
@@ -290,11 +270,9 @@ Returns details_t
 
 @section AccountXData.reported_posts()
 A read-only data member returning a list of posts
-@comment This needs an iterator wrapper.
 
 @section AccountXData.sort_values()
 A read-only data member returning a list of sort_value_t
-@comment This needs an iterator wrapper.
 
 @node Amount objects, PostHandler objects, AccountXData objects, Top
 @chapter Amount objects
@@ -356,19 +334,10 @@ Returns Amount
 Where moment can be either a date_t or a datetime_t.
 Returns an optional<Amount>
 
-@comment I don't think that Boost::Python knows how to automatically wrap
-@comment boost::optional values.
-
-@comment The moment parameter should be converted from native Python
-@comment date/datetime types.
 
 @section Amount.price
 
 Returns an optional<Amount>
-@comment I don't think that Boost::Python knows how to automatically wrap
-@comment boost::optional values.
-
-@comment This should be a read-only property.
 
 @section Amount.sign
 
@@ -376,8 +345,6 @@ Returns an integer less than, greater than, or equal to zero depending on
 whether the amount is negative, zero, or greater than zero.  Note that this
 function tests the actual value of the amount -- using its internal precision --
 and not the display value.  To test its display value, use: `round().sign()'.
-
-@comment This should be a read-only property.
 
 @section Amount.is_nonzero(), is_zero(), is_realzero(), is_null()
 
@@ -394,14 +361,10 @@ is never considered realzero.
 is_null() returns True if an amount has no value and no commodity.  This only
 occurs if an uninitialized amount has never been assigned a value.
 
-@comment These should be read-only properties.
-
 @section Amount.to_double(), __float__(), to_long(), __int__()
 
 @section Amount.fits_in_long()
 Returns bool.
-
-@comment This should be a read-only property.
 
 @section Amount.commodity
 Read/write Commodity property.
@@ -411,8 +374,6 @@ returned is the `null_commodity'.
 
 @section Amount.has_commodity()
 Returns bool, True if the amount has a commodity.
-
-@comment This should be a read-only property.
 
 @section Amount.with_commodity(commodity)
 Returns new Amount, with specified commodity applied to the target Amount.
@@ -428,17 +389,11 @@ An amount's commodity may be annotated with special details, such as the
 price it was purchased for, when it was acquired, or an arbitrary note,
 identifying perhaps the lot number of an item.
 
-@comment The source code comments on the annotation stuff is out of date.
-
 @section Amount.has_annotation()
 Returns bool
 
-@comment This should be a read-only property.
-
 @section Amount.annotation()
 Returns Annotation
-
-@comment This should be a read-only property.
 
 @section Amount.strip_annotations([keep_details])
 
@@ -459,8 +414,6 @@ values:
 @section valid()
 Returns bool
 
-@comment This should be a read-only property
-
 @node PostHandler objects, PostCollectorWrapper objects, Amount objects, Top
 @chapter PostHandler objects
 
@@ -469,27 +422,17 @@ Returns bool
 
 @node FileInfo objects, Journal objects, PostCollectorWrapper objects, Top
 @chapter FileInfo objects
-@comment The Python standard library has a few functions whose purpose overlaps
-@comment the functionality of this FileInfo class.  For example, os.stat returns
-@comment the file size and modification time.
 
 @section init
-@comment I don't think Boost::Python knows about boost::filesystem::path.  Is
-@comment the intent for Python code to be able to directly create FileInfo
-@comment objects?
 
 @section FileInfo.filename
 A read/write string property
-@comment I'm not sure that Boost:Python knows how to automatically wrap optional
-@comment or boost::filesystem::path.
-@comment See http://mail.python.org/pipermail/cplusplus-sig/2004-September/007757.html
 
 @section FileInfo.size
 A read/write unsigned integer property
 
 @section FileInfo.modtime
 A read/write datetime_t property
-@comment This needs a convertor to Python's datetime class.
 
 @section FileInfo.from_stream
 A read/write bool property
@@ -516,8 +459,6 @@ Returns Account
 
 @section Journal.find_account (journal, name, auto_create=True)
 Returns Account
-@comment BOOST_PYTHON_FUNCTION_OVERLOADS might be useful here to manage the
-@comment default value for the auto_create parameter.
 
 @section Journal.find_account_re (regexp)
 Returns Account
@@ -536,23 +477,18 @@ An iterator through the xacts collection
 
 @section Journal.xacts()
 An iterator through the transactions, each element is an xact
-@comment This should be a read-only property.
 
 @section Journal.auto_xacts()
 An iterator, each element is an xact.
-@comment This should be a read-only property.
 
 @section Journal.period_xacts()
 An iterator, each element is an xact.
-@comment This should be a read-only property.
 
 @section Journal.sources()
 An iterator, each element is a FileInfo.
-@comment This should be a read-only property.
 
 @section Journal.has_xdata()
 Returns bool
-@comment This should be a read-only property.
 
 @section Journal.clear_xdata()
 

@@ -240,15 +240,23 @@ void export_journal()
          (&collector_wrapper::begin, &collector_wrapper::end))
     ;
 
+  // TODO The Python standard library has a few functions whose purpose overlaps
+  // the functionality of this FileInfo class.  For example, os.stat returns the
+  // file size and modification time.
   class_< journal_t::fileinfo_t > ("FileInfo")
     .def(init<path>())
 
+    // TODO I don't think boost::python knows about boost:optional or
+    // boost::filesystem::path.  Is the intent for the Python code to be able to
+    // directly create FileInfo objects?  Does it make sense for these
+    // properties to be writable?
     .add_property("filename",
                   make_getter(&journal_t::fileinfo_t::filename),
                   make_setter(&journal_t::fileinfo_t::filename))
     .add_property("size",
                   make_getter(&journal_t::fileinfo_t::size),
                   make_setter(&journal_t::fileinfo_t::size))
+    // TODO This needs a convertor to/from Python's datetime class.
     .add_property("modtime",
                   make_getter(&journal_t::fileinfo_t::modtime),
                   make_setter(&journal_t::fileinfo_t::modtime))
@@ -276,6 +284,9 @@ void export_journal()
     .def("add_account", &journal_t::add_account)
     .def("remove_account", &journal_t::remove_account)
 
+    // TODO BOOST_PYTHON_FUNCTION_OVERLOADS might be useful here to manage the
+    // default value for the auto_create parameter.  I notice that this pattern
+    // is followed throughout the Python bridge code.
     .def("find_account", py_find_account_1,
          return_internal_reference<1,
              with_custodian_and_ward_postcall<1, 0> >())
@@ -298,17 +309,22 @@ void export_journal()
 
     .def("__iter__", python::range<return_internal_reference<> >
          (&journal_t::xacts_begin, &journal_t::xacts_end))
+    // TODO read-only property
     .def("xacts", python::range<return_internal_reference<> >
          (&journal_t::xacts_begin, &journal_t::xacts_end))
+    // TODO read-only property
     .def("auto_xacts", python::range<return_internal_reference<> >
          (&journal_t::auto_xacts_begin, &journal_t::auto_xacts_end))
+    // TODO read-only property
     .def("period_xacts", python::range<return_internal_reference<> >
          (&journal_t::period_xacts_begin, &journal_t::period_xacts_end))
+    // TODO read-only property
     .def("sources", python::range<return_internal_reference<> >
          (&journal_t::sources_begin, &journal_t::sources_end))
 #if 0
     .def("read", py_read)
 #endif
+    // TODO read-only property
     .def("has_xdata", &journal_t::has_xdata)
     .def("clear_xdata", &journal_t::clear_xdata)
 

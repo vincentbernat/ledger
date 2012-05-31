@@ -240,24 +240,40 @@ internal precision."))
     .def("in_place_unreduce", &amount_t::in_place_unreduce,
          return_internal_reference<>())
 
+    // TODO I don't think that boost::python knows how to automatically wrap
+    // boost::optional values.
     .def("value", py_value_0)
     .def("value", py_value_1, args("in_terms_of"))
+    // TODO The moment parameter should be converted from the native Python
+    // datetime type.
     .def("value", py_value_2, args("in_terms_of", "moment"))
+    // TODO The moment parameter should be converted from the native Python
+    // date type.
     .def("value", py_value_2d, args("in_terms_of", "moment"))
 
+    // TODO I don't think that boost::python knows how to automatically wrap
+    // boost::optional values.
+    // TODO read-only property
     .def("price", &amount_t::price)
 
+    // TODO read-only property
     .def("sign", &amount_t::sign)
+    // TODO read-only property
     .def("__nonzero__", &amount_t::is_nonzero)
+    // TODO read-only property
     .def("is_nonzero", &amount_t::is_nonzero)
+    // TODO read-only property
     .def("is_zero", &amount_t::is_zero)
+    // TODO read-only property
     .def("is_realzero", &amount_t::is_realzero)
+    // TODO read-only property
     .def("is_null", &amount_t::is_null)
 
     .def("to_double", &amount_t::to_double)
     .def("__float__", &amount_t::to_double)
     .def("to_long", &amount_t::to_long)
     .def("__int__", &amount_t::to_long)
+    // TODO read-only property
     .def("fits_in_long", &amount_t::fits_in_long)
 
     .def("__str__", &amount_t::to_string)
@@ -272,13 +288,17 @@ internal precision."))
                                 return_internal_reference<>()),
                   make_function(&amount_t::set_commodity,
                                 with_custodian_and_ward<1, 2>()))
+    // TODO read-only property
     .def("has_commodity", &amount_t::has_commodity)
     .def("with_commodity", &amount_t::with_commodity)
     .def("clear_commodity", &amount_t::clear_commodity)
 
     .def("number", &amount_t::number)
 
+    // TODO The source comments in amount.cc are out of date and don't match
+    // this list.
     .def("annotate", &amount_t::annotate)
+    // TODO read-only property
     .def("has_annotation", &amount_t::has_annotation)
     .add_property("annotation",
                   make_function(py_amount_annotation,
@@ -294,6 +314,7 @@ internal precision."))
     .def("parse_conversion", &amount_t::parse_conversion)
     .staticmethod("parse_conversion")
 
+    // TODO read-only property
     .def("valid", &amount_t::valid)
     ;
 
