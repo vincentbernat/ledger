@@ -85,7 +85,7 @@ class BoostInfo(object):
                      'libboost-iostreams-dev',
                      'libboost-python-dev' ]
 
-        elif system == 'ubuntu-oneiric':
+        elif system == 'ubuntu-oneiric' or system == 'ubuntu-precise':
             return [ 'libboost-dev',
                      'libboost-python-dev',
                      'libboost-regex-dev',
@@ -615,6 +615,30 @@ class PrepareBuild(CommandLineApp):
                             'lcov',
                             'sloccount'
                         ] + self.boost_info.dependencies('ubuntu-oneiric')
+                    elif re.search('precise', info):
+                        self.log.info('Looks like you are using APT on Ubuntu Precise')
+                        packages = [
+                            'sudo', 'apt-get', 'install',
+                            'build-essential',
+                            'libtool',
+                            'autoconf',
+                            'automake',
+                            'autopoint',
+                            'zlib1g-dev',
+                            'libbz2-dev',
+                            'python-dev',
+                            'cvs',
+                            'gettext',
+                            'libgmp3-dev',
+                            'libmpfr-dev',
+                            'libedit-dev',
+                            #'texlive-full',
+                            #'doxygen',
+                            #'graphviz',
+                            'texinfo',
+                            'lcov',
+                            'sloccount'
+                        ] + self.boost_info.dependencies('ubuntu-precise')
                     else:
                         self.log.info('I do not recognize your version of Ubuntu!')
                         packages = None
